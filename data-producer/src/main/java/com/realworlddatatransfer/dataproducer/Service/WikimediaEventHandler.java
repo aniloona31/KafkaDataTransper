@@ -4,13 +4,21 @@ import com.launchdarkly.eventsource.EventHandler;
 import com.launchdarkly.eventsource.MessageEvent;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 
-@AllArgsConstructor
 public class WikimediaEventHandler implements EventHandler {
-    private KafkaTemplate<String,String> kafkaTemplate;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WikimediaEventHandler.class);
+
+    private KafkaTemplate<String, String> kafkaTemplate;
     private String topic;
 
+    public WikimediaEventHandler(KafkaTemplate<String, String> kafkaTemplate, String topic) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.topic = topic;
+    }
 
     @Override
     public void onOpen() throws Exception {
@@ -24,7 +32,9 @@ public class WikimediaEventHandler implements EventHandler {
 
     @Override
     public void onMessage(String s, MessageEvent messageEvent) throws Exception {
-        kafkaTemplate.send(topic,messageEvent.getData());
+        LOGGER.info(String.format("event data -> %s", messageEvent.getData()));
+
+        kafkaTemplate.send(topic, messageEvent.getData());
     }
 
     @Override

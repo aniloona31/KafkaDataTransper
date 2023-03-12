@@ -12,7 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="data-consumer" target="17" />
-      <module name="data-producer" target="16" />
+      <module name="data-producer" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
